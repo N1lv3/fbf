@@ -1,0 +1,2732 @@
+ <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEG-CRYPTO - Футуристическая одежда</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ffffff;
+            --secondary-color: #000000;
+            --accent-color: #ff0000;
+            --accent-color-2: #b30000;
+            --accent-color-3: #ff3333;
+            --text-color: #f0f0f0;
+            --bg-color: #0a0a0a;
+            --card-bg: #111111;
+            --card-bg-light: #1a1a1a;
+            --transition-speed: 0.5s;
+            --navbar-height: 90px;
+            --cursor-size: 20px;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 30px rgba(255, 0, 0, 0.1);
+            --box-shadow-hover: 0 20px 40px rgba(255, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all var(--transition-speed) ease;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* Футуристичный фон с анимированными путями */
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-path {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .floating-path svg {
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+        }
+
+        .path-1 {
+            top: 0;
+            left: 0;
+            animation: floatPath 20s linear infinite;
+        }
+
+        .path-2 {
+            top: 0;
+            right: 0;
+            animation: floatPathReverse 25s linear infinite;
+        }
+
+        @keyframes floatPath {
+            0% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-50px) translateY(50px); }
+            50% { transform: translateX(0) translateY(100px); }
+            75% { transform: translateX(50px) translateY(50px); }
+            100% { transform: translateX(0) translateY(0); }
+        }
+
+        @keyframes floatPathReverse {
+            0% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(50px) translateY(-50px); }
+            50% { transform: translateX(0) translateY(-100px); }
+            75% { transform: translateX(-50px) translateY(-50px); }
+            100% { transform: translateX(0) translateY(0); }
+        }
+
+        /* Кастомный курсор */
+        .cursor {
+            position: fixed;
+            width: var(--cursor-size);
+            height: var(--cursor-size);
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor.hover {
+            transform: translate(-50%, -50%) scale(1.8);
+            background-color: var(--accent-color);
+            opacity: 0.7;
+            border-color: transparent;
+        }
+
+        .cursor.click {
+            transform: translate(-50%, -50%) scale(0.7);
+        }
+
+        .cursor.text-hover {
+            transform: translate(-50%, -50%) scale(2.5);
+            background-color: transparent;
+            border-color: var(--accent-color);
+        }
+
+        /* Навигация */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            height: var(--navbar-height);
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 5px 30px rgba(255, 0, 0, 0.2);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+        }
+
+        .logo:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+        }
+
+        .logo:hover:after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 1.5px;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            padding: 0.5rem 0;
+            text-transform: uppercase;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background: var(--accent-color);
+            bottom: 0;
+            left: 0;
+            transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-icons i {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            transition: all var(--transition-speed) ease;
+            position: relative;
+        }
+
+        .nav-icons i:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Мобильное меню */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Мобильная навигация в виде радиокнопок */
+        .mobile-radio-nav {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 30px;
+            padding: 10px;
+            z-index: 999;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.2);
+        }
+
+        .radio-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 300px;
+            height: 50px;
+        }
+
+        .radio-container input[type="radio"] {
+            display: none;
+        }
+
+        .radio-container label {
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1;
+        }
+
+        .radio-container input[type="radio"]:checked + label {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .glider-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .glider {
+            position: absolute;
+            height: 40px;
+            width: 80px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-2));
+            border-radius: 20px;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Социальные иконки в стиле футуризм */
+        .social-icons-futuristic {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .social-icons-futuristic .icon-content {
+            margin: 0;
+            position: relative;
+        }
+
+        .social-icons-futuristic .icon-content .tooltip {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            opacity: 0;
+            visibility: hidden;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .social-icons-futuristic .icon-content:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            top: -45px;
+        }
+
+        .social-icons-futuristic .icon-content .link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-icons-futuristic .icon-content .link:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--accent-color), transparent);
+            top: 0;
+            left: -100%;
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .social-icons-futuristic .icon-content .link:hover {
+            transform: translateY(-5px) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.3);
+            border-color: var(--accent-color);
+        }
+
+        .social-icons-futuristic .icon-content .link:hover:before {
+            left: 0;
+        }
+
+        .social-icons-futuristic .icon-content .link svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons-futuristic .icon-content .link:hover svg {
+            transform: scale(1.2);
+        }
+
+        /* Цвета для разных соцсетей */
+        .social-icons-futuristic .icon-content .link[data-social="instagram"]:hover {
+            color: #E4405F;
+        }
+
+        .social-icons-futuristic .icon-content .link[data-social="twitter"]:hover {
+            color: #1DA1F2;
+        }
+
+        .social-icons-futuristic .icon-content .link[data-social="telegram"]:hover {
+            color: #0088cc;
+        }
+
+        .social-icons-futuristic .icon-content .link[data-social="discord"]:hover {
+            color: #5865F2;
+        }
+
+        .social-icons-futuristic .icon-content .link[data-social="bitcoin"]:hover {
+            color: #F7931A;
+        }
+
+        /* Герой секция */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            padding-top: var(--navbar-height);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeUp 1s ease forwards 0.5s;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 900;
+        }
+
+        .hero-title span {
+            color: var(--accent-color);
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-title span::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            color: var(--text-color);
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 2.5rem;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-2));
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            border-radius: 50px;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color-2), var(--accent-color));
+            transition: left 0.7s ease;
+            z-index: -1;
+        }
+
+        .cta-button:hover:before {
+            left: 0;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.5);
+        }
+
+        .hero-image {
+            width: 50%;
+            opacity: 0;
+            transform: translateX(100px) rotate(5deg);
+            animation: fadeRight 1.2s ease forwards 1s;
+            position: relative;
+        }
+
+        .hero-image:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--accent-color);
+            border-radius: var(--border-radius);
+            top: 20px;
+            left: 20px;
+            z-index: -1;
+            animation: pulseBorder 3s infinite;
+        }
+
+        @keyframes pulseBorder {
+            0%, 100% { border-color: var(--accent-color); opacity: 1; }
+            50% { border-color: var(--accent-color-3); opacity: 0.7; }
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-hover);
+            transition: transform var(--transition-speed) ease;
+            filter: saturate(1.1) contrast(1.05);
+        }
+
+        .hero-image img:hover {
+            transform: scale(1.03) rotate(-1deg);
+        }
+
+        /* Модальное окно регистрации */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(255, 0, 0, 0.3);
+            border: 1px solid var(--accent-color);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal.active {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--accent-color);
+        }
+
+        .modal h2 {
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background-color: var(--card-bg-light);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+
+        .checkbox-group input {
+            margin-right: 10px;
+            width: auto;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-2));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .switch-form a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .switch-form a:hover {
+            color: var(--accent-color-3);
+        }
+
+        /* Секция коллекций */
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin: 5rem 0 3rem;
+            color: var(--primary-color);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: var(--accent-color);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .collections {
+            padding: 0 5% 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .collection-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: all var(--transition-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(50px);
+            position: relative;
+            border: 1px solid rgba(255, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .collection-card.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .collection-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--box-shadow-hover);
+            border-color: rgba(255, 0, 0, 0.3);
+        }
+
+        .collection-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .collection-img {
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .collection-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .collection-card:hover .collection-img img {
+            transform: scale(1.15);
+        }
+
+        .collection-info {
+            padding: 1.8rem;
+        }
+
+        .collection-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .collection-price {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .collection-desc {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .collection-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-add-cart {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: all var(--transition-speed) ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .btn-add-cart:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .btn-view {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+        }
+
+        .btn-view:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .btn-view:hover:after {
+            width: 100%;
+        }
+
+        /* О нас секция */
+        .about-section {
+            padding: 5rem 5%;
+            background: rgba(0, 0, 0, 0.5);
+            margin: 5rem 0;
+            border-radius: var(--border-radius);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .about-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: all var(--transition-speed) ease;
+            border: 1px solid rgba(255, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .about-card.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 0, 0, 0.3);
+            box-shadow: var(--box-shadow-hover);
+        }
+
+        .about-icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .about-card p {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Контакты секция */
+        .contact-section {
+            padding: 5rem 5%;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info, .contact-form {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 0, 0, 0.1);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .contact-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background-color: var(--card-bg-light);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 150px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-2));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+        }
+
+        /* Страница продукта */
+        .product-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            overflow-y: auto;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-modal.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .product-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--accent-color);
+        }
+
+        .close-product {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .close-product:hover {
+            background: var(--accent-color);
+            transform: rotate(90deg);
+        }
+
+        .product-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 3rem;
+        }
+
+        .product-gallery {
+            position: relative;
+        }
+
+        .product-main-img {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1rem;
+        }
+
+        .product-thumbnails {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .product-thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .product-thumbnail.active {
+            border-color: var(--accent-color);
+        }
+
+        .product-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .color-selector {
+            margin-top: 2rem;
+        }
+
+        .color-selector h4 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            font-size: 1.2rem;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .color-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .color-circle.active {
+            border-color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .color-circle.active:after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-shadow: 0 0 3px black;
+        }
+
+        .size-selector {
+            margin-top: 2rem;
+        }
+
+        .size-selector h4 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            font-size: 1.2rem;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .size-option {
+            padding: 0.5rem 1rem;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .size-option:hover, .size-option.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .product-details h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .product-price {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        .product-features {
+            margin-bottom: 2rem;
+        }
+
+        .product-features li {
+            margin-bottom: 0.5rem;
+            list-style: none;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .product-features li:before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-size: 0.8rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            border-radius: 30px;
+            overflow: hidden;
+            background: var(--card-bg-light);
+        }
+
+        .quantity-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--primary-color);
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .quantity-btn:hover {
+            background-color: rgba(255, 0, 0, 0.1);
+        }
+
+        .quantity-value {
+            width: 50px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .btn-buy {
+            flex: 1;
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-2));
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: 900;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-buy:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.4);
+        }
+
+        /* Админ панель */
+        .admin-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .admin-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Футер */
+        footer {
+            background-color: var(--secondary-color);
+            padding: 4rem 5% 2rem;
+            margin-top: 5rem;
+            border-top: 3px solid var(--accent-color);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.8rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--accent-color);
+            bottom: -8px;
+            left: 0;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            padding-left: 0;
+            display: inline-block;
+        }
+
+        .footer-links a:before {
+            content: '>';
+            color: var(--accent-color);
+            margin-right: 10px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+            padding-left: 15px;
+        }
+
+        .footer-links a:hover:before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .footer-social-icons {
+            margin-top: 1.5rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.8rem;
+            background: var(--card-bg-light);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 8px;
+            color: var(--text-color);
+        }
+
+        .newsletter-form button {
+            padding: 0.8rem 1.5rem;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            background: var(--accent-color-2);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Анимации */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px) rotate(5deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) rotate(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(255, 0, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+            }
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 4rem;
+            }
+            .product-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                padding-top: 120px;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .hero-content {
+                max-width: 100%;
+                margin-bottom: 4rem;
+            }
+
+            .hero-image {
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: var(--navbar-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--navbar-height));
+                background-color: rgba(0, 0, 0, 0.98);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: left 0.5s ease;
+                gap: 2rem;
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .mobile-radio-nav {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .collections {
+                grid-template-columns: 1fr;
+            }
+
+            .product-content {
+                padding: 2rem;
+            }
+
+            .product-actions {
+                flex-direction: column;
+            }
+
+            .quantity-selector {
+                justify-content: center;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .radio-container {
+                width: 280px;
+            }
+
+            .radio-container label {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .glider {
+                width: 70px;
+                height: 35px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .modal {
+                padding: 2rem;
+            }
+
+            .product-details h2 {
+                font-size: 2rem;
+            }
+
+            .product-price {
+                font-size: 2rem;
+            }
+
+            .radio-container {
+                width: 250px;
+            }
+
+            .radio-container label {
+                font-size: 11px;
+                padding: 5px 10px;
+            }
+
+            .glider {
+                width: 60px;
+                height: 30px;
+            }
+
+            .mobile-radio-nav {
+                bottom: 10px;
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .radio-container {
+                width: 220px;
+            }
+
+            .radio-container label {
+                font-size: 10px;
+                padding: 4px 8px;
+            }
+
+            .glider {
+                width: 55px;
+                height: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Кастомный курсор -->
+    <div class="cursor"></div>
+
+    <!-- Кнопка админа -->
+    <button class="admin-btn" id="adminBtn">
+        <i class="fas fa-user-secret"></i>
+    </button>
+
+    <!-- Навигация -->
+    <nav>
+        <div class="logo">MEG<span>-CRYPTO</span></div>
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" data-section="home">Главная</a></li>
+            <li><a href="#collections" data-section="collections">Коллекции</a></li>
+            <li><a href="#about" data-section="about">О нас</a></li>
+            <li><a href="#contact" data-section="contact">Контакты</a></li>
+        </ul>
+        <div class="nav-icons">
+            <i class="fas fa-search"></i>
+            <a href="#cart" id="cartIcon"><i class="fas fa-shopping-bag"><span class="cart-count">0</span></i></a>
+            <i class="fas fa-user" id="userIcon"></i>
+        </div>
+    </nav>
+
+    <!-- Мобильная навигация -->
+    <div class="mobile-radio-nav" id="mobileNav">
+        <div class="radio-container">
+            <input checked="" id="radio-home" name="radio" type="radio" />
+            <label for="radio-home">Главная</label>
+            <input id="radio-collections" name="radio" type="radio" />
+            <label for="radio-collections">Коллекции</label>
+            <input id="radio-about" name="radio" type="radio" />
+            <label for="radio-about">О нас</label>
+            <input id="radio-contact" name="radio" type="radio" />
+            <label for="radio-contact">Контакты</label>
+
+            <div class="glider-container">
+                <div class="glider"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно регистрации/входа -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div class="modal-content" id="modalContent">
+                <!-- Содержимое модального окна будет заполняться JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно продукта -->
+    <div class="product-modal" id="productModal">
+        <div class="product-container" id="productContainer">
+            <!-- Содержимое продукта будет заполняться JavaScript -->
+        </div>
+    </div>
+
+    <!-- Главная секция -->
+    <section class="hero" id="home">
+        <!-- Анимированный фон -->
+        <div class="hero-background">
+            <div class="floating-path path-1">
+                <svg viewBox="0 0 1000 1000" preserveAspectRatio="none">
+                    <path d="M-200,200 Q400,50 800,300 T1400,100" 
+                          stroke="rgba(255, 0, 0, 0.2)" 
+                          stroke-width="2" 
+                          fill="none"/>
+                    <path d="M-100,400 Q500,250 900,500 T1500,300" 
+                          stroke="rgba(179, 0, 0, 0.15)" 
+                          stroke-width="2" 
+                          fill="none"/>
+                    <path d="M0,600 Q600,450 1000,700 T1600,500" 
+                          stroke="rgba(255, 51, 51, 0.1)" 
+                          stroke-width="2" 
+                          fill="none"/>
+                </svg>
+            </div>
+            <div class="floating-path path-2">
+                <svg viewBox="0 0 1000 1000" preserveAspectRatio="none">
+                    <path d="M1200,200 Q600,50 200,300 T-400,100" 
+                          stroke="rgba(255, 0, 0, 0.2)" 
+                          stroke-width="2" 
+                          fill="none"/>
+                    <path d="M1100,400 Q500,250 100,500 T-500,300" 
+                          stroke="rgba(179, 0, 0, 0.15)" 
+                          stroke-width="2" 
+                          fill="none"/>
+                    <path d="M1000,600 Q400,450 0,700 T-600,500" 
+                          stroke="rgba(255, 51, 51, 0.1)" 
+                          stroke-width="2" 
+                          fill="none"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">MEG <span>CRYPTO</span></h1>
+            <p>Откройте новый уровень футуристической моды. Симбиоз крипто-технологий, умных тканей и дерзкого дизайна. Коллекции, созданные для цифровой эпохи.</p>
+            <a href="#collections" class="cta-button">Исследовать коллекцию</a>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.stroistyle.com/posts/6537559-komnata-krasivaia-1.jpg" alt="MEG-CRYPTO одежда">
+        </div>
+    </section>
+
+    <!-- Коллекции -->
+    <h2 class="section-title" id="collections">КОЛЛЕКЦИЯ "КРИПТО-КРАСНЫЙ"</h2>
+    <div class="collections" id="collectionsContainer">
+        <!-- Коллекции будут добавляться через JavaScript -->
+    </div>
+
+    <!-- Страница "О нас" -->
+    <div class="about-section" id="about">
+        <div class="about-content">
+            <h2 class="section-title">О MEG-CRYPTO</h2>
+            <p style="text-align: center; max-width: 800px; margin: 2rem auto 0; font-size: 1.1rem;">Мы — бренд, рожденный на стыке моды, технологий и крипто-культуры. Наша миссия — создавать одежду, которая не просто следует трендам, а задает новые стандарты в индустрии.</p>
+            
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>ИННОВАЦИИ</h3>
+                    <p>Мы используем передовые технологии: умные ткани, светодиодные элементы, NFC-чипы и солнечные панели, интегрированные в дизайн одежды.</p>
+                </div>
+                
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3>КАЧЕСТВО</h3>
+                    <p>Каждый продукт MEG-CRYPTO изготавливается из премиальных материалов с контролем качества на каждом этапе производства.</p>
+                </div>
+                
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>ЦИФРОВАЯ ИНТЕГРАЦИЯ</h3>
+                    <p>Наша одежда совместима с цифровым миром: от подключения к крипто-кошелькам до интеграции с метавселенными и NFT.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Страница "Контакты" -->
+    <div class="contact-section" id="contact">
+        <div class="contact-container">
+            <h2 class="section-title">СВЯЖИТЕСЬ С НАМИ</h2>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>КОНТАКТНАЯ ИНФОРМАЦИЯ</h3>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h4>Адрес</h4>
+                            <p>ул. Криптографическая, 21<br>Москва, Россия</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4>Телефон</h4>
+                            <p>+7 (999) 123-45-67</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@meg-crypto.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h4>Часы работы</h4>
+                            <p>Пн-Пт: 10:00 - 22:00<br>Сб-Вс: 11:00 - 20:00</p>
+                        </div>
+                    </div>
+
+                    <!-- Социальные иконки -->
+                    <div class="footer-social-icons">
+                        <ul class="social-icons-futuristic">
+                            <li class="icon-content">
+                                <a href="https://www.instagram.com/" aria-label="Instagram" data-social="instagram" class="link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                    </svg>
+                                </a>
+                                <div class="tooltip">Instagram</div>
+                            </li>
+                            <li class="icon-content">
+                                <a href="https://twitter.com/" aria-label="Twitter" data-social="twitter" class="link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.213c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                                    </svg>
+                                </a>
+                                <div class="tooltip">Twitter</div>
+                            </li>
+                            <li class="icon-content">
+                                <a href="https://telegram.org/" aria-label="Telegram" data-social="telegram" class="link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.2L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 13.15c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                                    </svg>
+                                </a>
+                                <div class="tooltip">Telegram</div>
+                            </li>
+                            <li class="icon-content">
+                                <a href="https://discord.com/" aria-label="Discord" data-social="discord" class="link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515a.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0a12.64 12.64 0 00-.617-1.25a.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057a19.9 19.9 0 005.993 3.03a.078.078 0 00.084-.028c.462-.63.872-1.295 1.226-1.994a.076.076 0 00-.041-.106a13.107 13.107 0 01-1.872-.892a.077.077 0 01-.008-.128c.125-.094.25-.188.372-.284a.076.076 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.076.076 0 01.078.01c.12.096.245.19.37.284a.077.077 0 01-.006.127a12.3 12.3 0 01-1.873.892a.077.077 0 00-.041.107c.355.698.765 1.363 1.226 1.993a.076.076 0 00.084.028a19.839 19.839 0 006.002-3.03a.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.41c0-1.325.956-2.41 2.157-2.41c1.21 0 2.176 1.095 2.157 2.41c0 1.325-.956 2.41-2.157 2.41zm7.975 0c-1.183 0-2.157-1.085-2.157-2.41c0-1.325.955-2.41 2.157-2.41c1.21 0 2.176 1.095 2.157 2.41c0 1.325-.946 2.41-2.157 2.41z"/>
+                                    </svg>
+                                </a>
+                                <div class="tooltip">Discord</div>
+                            </li>
+                            <li class="icon-content">
+                                <a href="https://bitcoin.org/" aria-label="Bitcoin" data-social="bitcoin" class="link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 11.59c.78.78.78 2.05 0 2.83-.39.39-.9.59-1.41.59s-1.02-.2-1.41-.59L8.59 14c-.78-.78-.78-2.05 0-2.83l2.83-2.83c.39-.39.9-.59 1.41-.59s1.02.2 1.41.59l2.83 2.83c.78.78.78 2.05 0 2.83L13.41 13.59z"/>
+                                    </svg>
+                                </a>
+                                <div class="tooltip">Bitcoin</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>ОСТАВЬТЕ СООБЩЕНИЕ</h3>
+                    
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Имя</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Телефон</label>
+                            <input type="tel" id="phone">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Сообщение</label>
+                            <textarea id="message" rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Отправить сообщение</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>MEG-CRYPTO</h3>
+                <p>Футуристическая одежда для цифровой эпохи. Объединяем моду, технологии и крипто-культуру. Принимаем Bitcoin, Ethereum и другие криптовалюты.</p>
+                <div class="footer-social-icons">
+                    <ul class="social-icons-futuristic">
+                        <li class="icon-content">
+                            <a href="https://www.instagram.com/" aria-label="Instagram" data-social="instagram" class="link">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </a>
+                            <div class="tooltip">Instagram</div>
+                        </li>
+                        <li class="icon-content">
+                            <a href="https://twitter.com/" aria-label="Twitter" data-social="twitter" class="link">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.213c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                                </svg>
+                            </a>
+                            <div class="tooltip">Twitter</div>
+                        </li>
+                        <li class="icon-content">
+                            <a href="https://telegram.org/" aria-label="Telegram" data-social="telegram" class="link">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.2L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 13.15c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                                </svg>
+                            </a>
+                            <div class="tooltip">Telegram</div>
+                        </li>
+                        <li class="icon-content">
+                            <a href="https://discord.com/" aria-label="Discord" data-social="discord" class="link">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515a.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0a12.64 12.64 0 00-.617-1.25a.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057a19.9 19.9 0 005.993 3.03a.078.078 0 00.084-.028c.462-.63.872-1.295 1.226-1.994a.076.076 0 00-.041-.106a13.107 13.107 0 01-1.872-.892a.077.077 0 01-.008-.128c.125-.094.25-.188.372-.284a.076.076 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.076.076 0 01.078.01c.12.096.245.19.37.284a.077.077 0 01-.006.127a12.3 12.3 0 01-1.873.892a.077.077 0 00-.041.107c.355.698.765 1.363 1.226 1.993a.076.076 0 00.084.028a19.839 19.839 0 006.002-3.03a.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.41c0-1.325.956-2.41 2.157-2.41c1.21 0 2.176 1.095 2.157 2.41c0 1.325-.956 2.41-2.157 2.41zm7.975 0c-1.183 0-2.157-1.085-2.157-2.41c0-1.325.955-2.41 2.157-2.41c1.21 0 2.176 1.095 2.157 2.41c0 1.325-.946 2.41-2.157 2.41z"/>
+                                </svg>
+                            </a>
+                            <div class="tooltip">Discord</div>
+                        </li>
+                        <li class="icon-content">
+                            <a href="https://bitcoin.org/" aria-label="Bitcoin" data-social="bitcoin" class="link">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 11.59c.78.78.78 2.05 0 2.83-.39.39-.9.59-1.41.59s-1.02-.2-1.41-.59L8.59 14c-.78-.78-.78-2.05 0-2.83l2.83-2.83c.39-.39.9-.59 1.41-.59s1.02.2 1.41.59l2.83 2.83c.78.78.78 2.05 0 2.83L13.41 13.59z"/>
+                                </svg>
+                            </a>
+                            <div class="tooltip">Bitcoin</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>МАГАЗИН</h3>
+                <ul class="footer-links">
+                    <li><a href="#collections">Новая коллекция</a></li>
+                    <li><a href="#collections">Мужская одежда</a></li>
+                    <li><a href="#collections">Женская одежда</a></li>
+                    <li><a href="#collections">Аксессуары</a></li>
+                    <li><a href="#collections">NFT Коллекция</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>ПОМОЩЬ</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Доставка и возврат</a></li>
+                    <li><a href="#">Оплата криптовалютой</a></li>
+                    <li><a href="#">Размеры и примерка</a></li>
+                    <li><a href="#">Уход за одеждой</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>РАССЫЛКА</h3>
+                <p>Подпишитесь на рассылку, чтобы первыми узнавать о новых коллекциях и эксклюзивных предложениях.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Ваш email">
+                    <button type="submit">OK</button>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 MEG-CRYPTO. Все права защищены. Принимаем Bitcoin, Ethereum и другие криптовалюты.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Данные продуктов
+        const products = [
+            {
+                id: 1,
+                name: "ХУДИ 'BLOCKCHAIN BLOOD'",
+                price: "$189.99",
+                image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1556821840-3a63f95609a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                colors: ["#ff0000", "#000000", "#1a1a1a", "#333333"],
+                sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+                description: "Премиальное худи с технологичной отделкой, встроенными светодиодами и NFC-чипом для подключения к вашему крипто-кошельку.",
+                features: [
+                    "Встроенные светодиоды с RGB подсветкой",
+                    "NFC-чип для подключения к крипто-кошельку",
+                    "Умная ткань с температурным контролем",
+                    "Водоотталкивающая обработка",
+                    "Солнечные панели на капюшоне для зарядки устройств"
+                ],
+                badge: "Хит"
+            },
+            {
+                id: 2,
+                name: "ДЖИНСЫ 'NEON NETWORK'",
+                price: "$249.99",
+                image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                colors: ["#0000ff", "#000000", "#1a1a1a", "#4a4a4a"],
+                sizes: ["28", "30", "32", "34", "36", "38"],
+                description: "Джинсы с неоновыми вставками, меняющими цвет в зависимости от освещения, и умной тканью с подогревом.",
+                features: [
+                    "Неоновые вставки с изменением цвета",
+                    "Умная ткань с подогревом",
+                    "Встроенные датчики движения",
+                    "Усиленные швы и карманы",
+                    "Водонепроницаемая обработка"
+                ],
+                badge: "Новинка"
+            },
+            {
+                id: 3,
+                name: "КРОССОВКИ 'ETHEREUM FLAME'",
+                price: "$399.99",
+                image: "https://images.unsplash.com/photo-1539185441755-769473a23570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1539185441755-769473a23570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                colors: ["#ff0000", "#ffff00", "#000000", "#ff4500"],
+                sizes: ["38", "39", "40", "41", "42", "43", "44", "45"],
+                description: "Умные кроссовки с NFC-чипом для подключения к вашему NFT-кошельку, светодиодной подсветкой и автоподгонкой.",
+                features: [
+                    "NFC-чип для подключения к NFT-кошельку",
+                    "Светодиодная подсветка подошвы",
+                    "Система автоподгонки",
+                    "Амортизирующая подошва",
+                    "Встроенный шагомер и GPS"
+                ],
+                badge: "Эксклюзив"
+            },
+            {
+                id: 4,
+                name: "КУРТКА 'BITCOIN LEATHER'",
+                price: "$599.99",
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                images: [
+                    "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                ],
+                colors: ["#000000", "#8b0000", "#2f4f4f", "#696969"],
+                sizes: ["S", "M", "L", "XL", "XXL"],
+                description: "Кожаная куртка с красной LED-подсветкой, вшитыми солнечными панелями для зарядки устройств и NFC-меткой.",
+                features: [
+                    "Красная LED-подсветка по контуру",
+                    "Солнечные панели на спине",
+                    "NFC-метка для цифровой аутентификации",
+                    "Водонепроницаемая мембрана",
+                    "Усиленные плечи и локти"
+                ],
+                badge: "Лимитированная"
+            }
+        ];
+
+        // Инициализация DOM элементов
+        const cursor = document.querySelector('.cursor');
+        const navLinks = document.getElementById('navLinks');
+        const menuToggle = document.getElementById('menuToggle');
+        const authModal = document.getElementById('authModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModal = document.getElementById('closeModal');
+        const userIcon = document.getElementById('userIcon');
+        const adminBtn = document.getElementById('adminBtn');
+        const productModal = document.getElementById('productModal');
+        const productContainer = document.getElementById('productContainer');
+        const collectionsContainer = document.getElementById('collectionsContainer');
+        const cartCount = document.querySelector('.cart-count');
+        const cartIcon = document.getElementById('cartIcon');
+        const mobileNav = document.getElementById('mobileNav');
+        const radioInputs = document.querySelectorAll('.radio-container input[type="radio"]');
+        const glider = document.querySelector('.glider');
+
+        // Кастомный курсор
+        document.addEventListener('mousemove', (e) => {
+            const cursorSize = parseInt(getComputedStyle(cursor).getPropertyValue('--cursor-size')) / 2;
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.body.style.cursor = 'none';
+
+        const hoverElements = document.querySelectorAll('a, button, .collection-card, .nav-icons i, .about-card, .contact-item, .icon-content .link');
+        hoverElements.forEach(element => {
+            element.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            element.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        const textElements = document.querySelectorAll('h1, h2, h3, p, .logo, .section-title');
+        textElements.forEach(element => {
+            element.addEventListener('mouseenter', () => cursor.classList.add('text-hover'));
+            element.addEventListener('mouseleave', () => cursor.classList.remove('text-hover'));
+        });
+
+        document.addEventListener('mousedown', () => cursor.classList.add('click'));
+        document.addEventListener('mouseup', () => cursor.classList.remove('click'));
+
+        // Мобильное меню
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Закрытие меню при клике на ссылку
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                const section = link.getAttribute('data-section');
+                updateMobileNav(section);
+            });
+        });
+
+        // Мобильная навигация
+        function updateMobileNav(section) {
+            const radioId = `radio-${section}`;
+            const radioInput = document.getElementById(radioId);
+            if (radioInput) {
+                radioInput.checked = true;
+                updateGliderPosition(radioInput);
+            }
+        }
+
+        function updateGliderPosition(selectedInput) {
+            const index = Array.from(radioInputs).indexOf(selectedInput);
+            const label = selectedInput.nextElementSibling;
+            const containerWidth = document.querySelector('.radio-container').offsetWidth;
+            const labelWidth = containerWidth / radioInputs.length;
+            const gliderWidth = 80; // Ширина глидера
+            
+            if (window.innerWidth <= 768) {
+                glider.style.width = '70px';
+                glider.style.height = '35px';
+            }
+            if (window.innerWidth <= 576) {
+                glider.style.width = '60px';
+                glider.style.height = '30px';
+            }
+            if (window.innerWidth <= 400) {
+                glider.style.width = '55px';
+                glider.style.height = '28px';
+            }
+            
+            const offset = (labelWidth - parseInt(glider.style.width || gliderWidth)) / 2;
+            glider.style.transform = `translateX(${index * labelWidth + offset}px)`;
+        }
+
+        radioInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                updateGliderPosition(this);
+                const section = this.id.replace('radio-', '');
+                scrollToSection(section);
+            });
+        });
+
+        function scrollToSection(section) {
+            const targetElement = document.getElementById(section);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Инициализация позиции глидера
+        updateGliderPosition(document.getElementById('radio-home'));
+
+        // Система аутентификации
+        let currentUser = null;
+        let isLoginForm = true;
+
+        function showAuthModal() {
+            isLoginForm = true;
+            renderAuthForm();
+            authModal.classList.add('active');
+            setTimeout(() => {
+                document.querySelector('.modal').classList.add('active');
+            }, 10);
+        }
+
+        function renderAuthForm() {
+            if (isLoginForm) {
+                modalContent.innerHTML = `
+                    <h2>ВОЙТИ</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email адрес</label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Пароль</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="modal-btn">Войти</button>
+                    </form>
+                    <div class="switch-form">
+                        Нет аккаунта? <a href="#" id="switchToRegister">Зарегистрироваться</a>
+                    </div>
+                `;
+                
+                document.getElementById('loginForm').addEventListener('submit', handleLogin);
+                document.getElementById('switchToRegister').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isLoginForm = false;
+                    renderAuthForm();
+                });
+            } else {
+                modalContent.innerHTML = `
+                    <h2>СОЗДАТЬ АККАУНТ</h2>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="role">Роль</label>
+                            <select id="role" required>
+                                <option value="">Выберите роль</option>
+                                <option value="user">Пользователь</option>
+                                <option value="admin">Администратор</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">Имя</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Фамилия</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Имя пользователя</label>
+                            <input type="text" id="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email адрес</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Пароль</label>
+                            <input type="password" id="password" required>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms">Я согласен с Условиями использования</label>
+                        </div>
+                        <button type="submit" class="modal-btn">Создать аккаунт</button>
+                    </form>
+                    <div class="switch-form">
+                        Уже есть аккаунт? <a href="#" id="switchToLogin">Войти</a>
+                    </div>
+                `;
+                
+                document.getElementById('registerForm').addEventListener('submit', handleRegister);
+                document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isLoginForm = true;
+                    renderAuthForm();
+                });
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Симуляция входа
+            if (email && password) {
+                currentUser = {
+                    email: email,
+                    role: email === 'admin@megcrypto.com' ? 'admin' : 'user'
+                };
+                
+                showNotification('Успешный вход!', 'success');
+                closeAuthModal();
+                updateUserStatus();
+            } else {
+                showNotification('Пожалуйста, заполните все поля', 'error');
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const role = document.getElementById('role').value;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const terms = document.getElementById('terms').checked;
+            
+            if (!role || !firstName || !lastName || !username || !email || !password || !terms) {
+                showNotification('Пожалуйста, заполните все поля', 'error');
+                return;
+            }
+            
+            // Симуляция регистрации
+            currentUser = {
+                role: role,
+                firstName: firstName,
+                lastName: lastName,
+                username: username,
+                email: email
+            };
+            
+            showNotification('Аккаунт успешно создан!', 'success');
+            closeAuthModal();
+            updateUserStatus();
+        }
+
+        function closeAuthModal() {
+            document.querySelector('.modal').classList.remove('active');
+            setTimeout(() => {
+                authModal.classList.remove('active');
+            }, 300);
+        }
+
+        function updateUserStatus() {
+            if (currentUser) {
+                userIcon.style.color = 'var(--accent-color)';
+                userIcon.title = `Вошли как: ${currentUser.email}`;
+                if (currentUser.role === 'admin') {
+                    adminBtn.style.display = 'flex';
+                }
+            } else {
+                userIcon.style.color = '';
+                userIcon.title = '';
+                adminBtn.style.display = 'none';
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                padding: 1rem 2rem;
+                background: ${type === 'success' ? 'linear-gradient(90deg, #00cc00, #009900)' : 'linear-gradient(90deg, #ff0000, #b30000)'};
+                color: white;
+                border-radius: var(--border-radius);
+                z-index: 3000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+                font-weight: 600;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 10);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Обработчики для модального окна
+        userIcon.addEventListener('click', (e) => {
+            e.preventDefault();
+            showAuthModal();
+        });
+
+        closeModal.addEventListener('click', closeAuthModal);
+        authModal.addEventListener('click', (e) => {
+            if (e.target === authModal) {
+                closeAuthModal();
+            }
+        });
+
+        // Админ панель
+        adminBtn.addEventListener('click', () => {
+            if (currentUser && currentUser.role === 'admin') {
+                showNotification('Добро пожаловать в админ панель!', 'success');
+                // Здесь можно добавить функционал админ панели
+            } else {
+                showNotification('Требуется вход как администратор', 'error');
+                showAuthModal();
+            }
+        });
+
+        // Загрузка коллекций
+        function loadCollections() {
+            collectionsContainer.innerHTML = '';
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'collection-card';
+                card.innerHTML = `
+                    ${product.badge ? `<div class="collection-badge">${product.badge}</div>` : ''}
+                    <div class="collection-img">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="collection-info">
+                        <h3 class="collection-title">${product.name}</h3>
+                        <p class="collection-price">${product.price}</p>
+                        <p class="collection-desc">${product.description}</p>
+                        <div class="collection-actions">
+                            <button class="btn-add-cart" data-id="${product.id}">В корзину</button>
+                            <a href="#" class="btn-view view-product" data-id="${product.id}">Подробнее</a>
+                        </div>
+                    </div>
+                `;
+                collectionsContainer.appendChild(card);
+                
+                // Анимация появления
+                setTimeout(() => {
+                    card.classList.add('in-view');
+                }, 100);
+            });
+            
+            // Обработчики для кнопок
+            document.querySelectorAll('.view-product').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const productId = parseInt(btn.getAttribute('data-id'));
+                    showProductModal(productId);
+                });
+            });
+            
+            document.querySelectorAll('.btn-add-cart').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const productId = parseInt(btn.getAttribute('data-id'));
+                    addToCart(productId);
+                });
+            });
+        }
+
+        // Модальное окно продукта
+        function showProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            productContainer.innerHTML = `
+                <button class="close-product" id="closeProduct">&times;</button>
+                <div class="product-content">
+                    <div class="product-gallery">
+                        <img src="${product.images[0]}" alt="${product.name}" class="product-main-img" id="mainProductImage">
+                        <div class="product-thumbnails">
+                            ${product.images.map((img, index) => `
+                                <div class="product-thumbnail ${index === 0 ? 'active' : ''}" data-index="${index}">
+                                    <img src="${img}" alt="${product.name}">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="color-selector">
+                            <h4>Цвет:</h4>
+                            <div class="color-options">
+                                ${product.colors.map((color, index) => `
+                                    <div class="color-circle ${index === 0 ? 'active' : ''}" 
+                                         style="background-color: ${color};" 
+                                         data-color="${color}"></div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="size-selector">
+                            <h4>Размер:</h4>
+                            <div class="size-options">
+                                ${product.sizes.map(size => `
+                                    <button class="size-option" data-size="${size}">${size}</button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h2>${product.name}</h2>
+                        <p class="product-price">${product.price}</p>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-features">
+                            <h4>Особенности:</h4>
+                            <ul>
+                                ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="product-actions">
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus">-</button>
+                                <span class="quantity-value">1</span>
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                            <button class="btn-buy" data-id="${product.id}">Добавить в корзину</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            productModal.classList.add('active');
+            
+            // Обработчики для модального окна продукта
+            document.getElementById('closeProduct').addEventListener('click', closeProductModal);
+            
+            document.querySelectorAll('.product-thumbnail').forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('active'));
+                    thumb.classList.add('active');
+                    const index = thumb.getAttribute('data-index');
+                    document.getElementById('mainProductImage').src = product.images[index];
+                });
+            });
+            
+            document.querySelectorAll('.color-circle').forEach(circle => {
+                circle.addEventListener('click', () => {
+                    document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('active'));
+                    circle.classList.add('active');
+                });
+            });
+            
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.size-option').forEach(o => o.classList.remove('active'));
+                    option.classList.add('active');
+                });
+            });
+            
+            const quantityValue = document.querySelector('.quantity-value');
+            document.querySelector('.quantity-btn.plus').addEventListener('click', () => {
+                let value = parseInt(quantityValue.textContent);
+                quantityValue.textContent = value + 1;
+            });
+            
+            document.querySelector('.quantity-btn.minus').addEventListener('click', () => {
+                let value = parseInt(quantityValue.textContent);
+                if (value > 1) {
+                    quantityValue.textContent = value - 1;
+                }
+            });
+            
+            document.querySelector('.btn-buy').addEventListener('click', () => {
+                const quantity = parseInt(quantityValue.textContent);
+                addToCart(productId, quantity);
+                closeProductModal();
+            });
+        }
+
+        function closeProductModal() {
+            productModal.classList.remove('active');
+        }
+
+        // Корзина
+        let cart = [];
+
+        function addToCart(productId, quantity = 1) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: parseFloat(product.price.replace('$', '')),
+                    image: product.image,
+                    quantity: quantity
+                });
+            }
+            
+            updateCartCount();
+            showNotification(`${product.name} добавлен в корзину!`, 'success');
+        }
+
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Анимация
+            cartCount.style.transform = 'scale(1.5)';
+            setTimeout(() => {
+                cartCount.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    navLinks.classList.remove('active');
+                    menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 120,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Обработчик для иконки корзины
+        cartIcon.addEventListener('click', (e) => {
+            e.preventDefault();
+            showNotification('Корзина пока в разработке. Скоро будет доступна!', 'success');
+        });
+
+        // Анимация при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+
+        document.querySelectorAll('.section-title, .collection-card, .about-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Изменение цвета навигации при скролле
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.backgroundColor = 'rgba(0, 0, 0, 0.98)';
+                nav.style.boxShadow = '0 5px 30px rgba(255, 0, 0, 0.3)';
+            } else {
+                nav.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+                nav.style.boxShadow = '0 5px 30px rgba(255, 0, 0, 0.2)';
+            }
+            
+            // Обновление активной секции для мобильной навигации
+            const sections = ['home', 'collections', 'about', 'contact'];
+            let currentSection = 'home';
+            
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) {
+                        currentSection = section;
+                    }
+                }
+            });
+            
+            updateMobileNav(currentSection);
+        });
+
+        // Обработчик для формы контактов
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showNotification('Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.', 'success');
+            this.reset();
+        });
+
+        // Инициализация при загрузке
+        window.addEventListener('load', () => {
+            loadCollections();
+            
+            // Плавное появление
+            document.body.style.opacity = 0;
+            document.body.style.transition = 'opacity 1s ease';
+            
+            setTimeout(() => {
+                document.body.style.opacity = 1;
+            }, 100);
+            
+            // Анимация курсора
+            cursor.style.opacity = '0';
+            cursor.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                cursor.style.opacity = '1';
+            }, 500);
+            
+            // Показать мобильную навигацию на мобильных устройствах
+            if (window.innerWidth <= 992) {
+                mobileNav.style.display = 'block';
+            }
+        });
+
+        // Адаптация при изменении размера окна
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 992) {
+                mobileNav.style.display = 'block';
+            } else {
+                mobileNav.style.display = 'none';
+            }
+            
+            // Обновить позицию глидера
+            const checkedInput = document.querySelector('.radio-container input[type="radio"]:checked');
+            if (checkedInput) {
+                updateGliderPosition(checkedInput);
+            }
+        });
+    </script>
+</body>
+</html>
